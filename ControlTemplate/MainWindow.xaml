@@ -1,0 +1,55 @@
+﻿<Window x:Class="ControlTemplate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ControlTemplate"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="200" Width="600"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <ControlTemplate x:Key="CheckBox" TargetType="CheckBox">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid Width="30" Height="30" Margin="3">
+                        <!--<Rectangle Fill="{TemplateBinding Background}"  Opacity="0"/>-->
+                        <Path x:Name="checkedState" Opacity="0" Stroke="Black" StrokeThickness="2">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <LineGeometry StartPoint="0,0" EndPoint="30,30"/>
+                                    <LineGeometry StartPoint="30, 0" EndPoint="0,30"/>
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                        <Ellipse x:Name="indeterminateState" Width="20" Height="20" Fill="Black" Opacity="0"/>
+                    </Grid>
+                </Border>
+                <ContentPresenter Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="checkedState" Property="Opacity" Value="1"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter TargetName="checkedState" Property="Opacity" Value="0"/>
+                    <Setter TargetName="indeterminateState" Property="Opacity" Value="0"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="{x:Null}">
+                    <Setter TargetName="indeterminateState" Property="Opacity" Value="1"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <UniformGrid VerticalAlignment="Center" HorizontalAlignment="Center" Columns="3">
+        <CheckBox Content="Неотмеченный" Margin="10" Template="{StaticResource CheckBox}" FontSize="16"/>
+        <CheckBox Content="Отмеченный" Margin="10" Template="{StaticResource CheckBox}" IsChecked="True" FontSize="16"/>
+        <CheckBox Content="Неопределённый" Margin="10" Template="{StaticResource CheckBox}" IsThreeState="True" IsChecked="{x:Null}" FontSize="16"/>
+    </UniformGrid>
+</Window>
